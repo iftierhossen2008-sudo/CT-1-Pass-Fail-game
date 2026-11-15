@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CT Pass/Fail Spin</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f0f2f5; margin:0; padding:20px; }
+  h1 { text-align:center; color:#222; }
+  .list { max-width:600px; margin:20px auto; }
+  .row { display:flex; align-items:center; justify-content:space-between; background:#fff; padding:12px 16px; margin-bottom:10px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,.1); }
+  .name { font-size:18px; font-weight:bold; }
+  .right { display:flex; align-items:center; gap:12px; }
+  .result { min-width:70px; text-align:center; font-weight:bold; font-size:18px; padding:6px 10px; border-radius:8px; background:#eee; color:#555; transition: transform .1s; }
+  .result.pass { background:#d4f8d4; color:#117a11; }
+  .result.fail { background:#ffd6d6; color:#b00020; }
+  .result.spinning { background:#fff3cd; color:#8a6d00; transform:scale(1.1); }
+  button { padding:8px 16px; font-size:16px; border:none; border-radius:8px; background:#1976d2; color:#fff; cursor:pointer; }
+  button:disabled { background:#999; cursor:not-allowed; }
+</style>
+</head>
+<body>
+<h1>CT Pass / Fail Spin</h1>
+<div class="list" id="list"></div>
+
+<script>
+  const students = [
+    "Yasir Arafat",
+    "Abu Bakar",
+    "Turjown",
+    "Obaidur Rahman",
+    "Adnan Shafin",
+    "Afia Diba",
+    "AR Rafi",
+    "Ashrafi Nijhum",
+    "Ayesha Kabir Anu",
+    "Faiza Tabassum",
+    "Galib",
+    "Mahim",
+    "Mehjabin",
+    "Nahian",
+    "Arshi",
+    "Rezanul Haque Bijoy",
+    "Sajib Sarkar",
+    "Safa",
+    "Siamul",
+    "Tisha",
+    "Tasfia",
+    "Iftia",
+    "Wajed",
+    "Sakib (1)",
+    "Sakib (2)",
+    "Jamil"
+  ];
+
+  const list = document.getElementById("list");
+
+  students.forEach(name => {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <span class="name">${name}</span>
+      <div class="right">
+        <span class="result">?</span>
+        <button>Spin</button>
+      </div>`;
+    const btn = row.querySelector("button");
+    const result = row.querySelector(".result");
+
+    btn.addEventListener("click", () => {
+      btn.disabled = true;
+      result.className = "result spinning";
+      let count = 0;
+      const timer = setInterval(() => {
+        result.textContent = (count % 2 === 0) ? "PASS" : "FAIL";
+        count++;
+      }, 100);
+      setTimeout(() => {
+        clearInterval(timer);
+        const final = Math.random() < 0.5 ? "PASS" : "FAIL";
+        result.textContent = final;
+        result.className = "result " + (final === "PASS" ? "pass" : "fail");
+        btn.disabled = false;
+      }, 1500);
+    });
+
+    list.appendChild(row);
+  });
+</script>
+</body>
+</html>
